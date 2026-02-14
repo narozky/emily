@@ -1,27 +1,507 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>LEVEL_06</title>
-<style>
-body {
-  background:black;
-  color:#00ff88;
-  font-family:monospace;
-  text-align:center;
-  padding-top:15%;
-}
-a { color:#00ffff; }
-</style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A rainbow-unicorn birthday invitation." />
+    <title>Emily’s 6th Birthday</title>
+
+    <style>
+        :root{
+            --bg1:#fff7fe;
+            --bg2:#f2fbff;
+
+            --card: rgba(255,255,255,.72);
+            --stroke: rgba(116, 55, 150, .18);
+
+            --text:#2a1b3d;
+            --muted: rgba(42,27,61,.72);
+
+            --pink:#ff4fd8;
+            --purple:#8a5bff;
+            --blue:#39c6ff;
+            --mint:#2ee6b6;
+            --yellow:#ffd65a;
+
+            --radius: 22px;
+            --shadow: 0 18px 50px rgba(90, 30, 130, .14);
+            --max: 980px;
+        }
+
+        *{ box-sizing:border-box; }
+        html,body{ height:100%; }
+        body{
+            margin:0;
+            color:var(--text);
+            font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+            background:
+                    radial-gradient(900px 600px at 15% 10%, rgba(255,79,216,.20), transparent 60%),
+                    radial-gradient(900px 600px at 85% 15%, rgba(57,198,255,.22), transparent 60%),
+                    radial-gradient(900px 600px at 50% 95%, rgba(46,230,182,.22), transparent 62%),
+                    linear-gradient(180deg, var(--bg1), var(--bg2));
+            overflow-x:hidden;
+        }
+
+        a{ color:inherit; text-decoration:none; }
+        a:focus-visible, button:focus-visible{
+            outline: 3px solid rgba(57,198,255,.55);
+            outline-offset: 3px;
+            border-radius: 12px;
+        }
+
+        /* Floating sparkles/confetti */
+        .sparkles{
+            position: fixed;
+            inset: 0;
+            pointer-events:none;
+            opacity:.55;
+            background:
+                    radial-gradient(circle at 12% 18%, rgba(255,79,216,.45) 0 6px, transparent 7px),
+                    radial-gradient(circle at 82% 22%, rgba(57,198,255,.45) 0 5px, transparent 6px),
+                    radial-gradient(circle at 55% 12%, rgba(255,214,90,.55) 0 4px, transparent 5px),
+                    radial-gradient(circle at 20% 78%, rgba(46,230,182,.45) 0 5px, transparent 6px),
+                    radial-gradient(circle at 88% 75%, rgba(138,91,255,.45) 0 6px, transparent 7px);
+            filter: blur(.2px);
+        }
+
+        .wrap{
+            min-height:100%;
+            display:grid;
+            place-items:center;
+            padding: clamp(18px, 4vw, 44px);
+            position: relative;
+        }
+
+        header{
+            width:min(var(--max), 100%);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap: 14px;
+            padding: 10px 4px 18px;
+        }
+
+        .brand{
+            display:flex;
+            align-items:center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .sticker{
+            width:48px;
+            height:48px;
+            border-radius: 16px;
+            background:
+                    linear-gradient(135deg, rgba(255,79,216,.9), rgba(57,198,255,.85), rgba(46,230,182,.8));
+            box-shadow: 0 14px 34px rgba(138, 91, 255, .18);
+            border: 1px solid rgba(255,255,255,.7);
+            position: relative;
+            overflow:hidden;
+            flex: 0 0 auto;
+        }
+        .sticker::after{
+            content:"";
+            position:absolute;
+            inset:-2px;
+            background:
+                    radial-gradient(14px 14px at 25% 28%, rgba(255,255,255,.55), transparent 60%),
+                    radial-gradient(20px 20px at 70% 75%, rgba(255,255,255,.32), transparent 60%);
+            pointer-events:none;
+        }
+
+        .brand h1{
+            margin:0;
+            font-size: 14px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(42,27,61,.72);
+            white-space: nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        .pill{
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding: 10px 12px;
+            border: 1px solid var(--stroke);
+            border-radius: 999px;
+            background: rgba(255,255,255,.60);
+            box-shadow: 0 10px 25px rgba(90, 30, 130, .08);
+            color: rgba(42,27,61,.78);
+            font-size: 13px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        main{
+            width:min(var(--max), 100%);
+            display:grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: clamp(16px, 3.5vw, 28px);
+            align-items: stretch;
+        }
+
+        .card{
+            background: var(--card);
+            border: 1px solid var(--stroke);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .hero{
+            padding: clamp(18px, 4vw, 34px);
+            position: relative;
+            overflow:hidden;
+        }
+
+        .hero::before{
+            content:"";
+            position:absolute;
+            inset:-2px;
+            background:
+                    radial-gradient(680px 360px at 16% 22%, rgba(255,79,216,.20), transparent 60%),
+                    radial-gradient(680px 360px at 92% 28%, rgba(57,198,255,.20), transparent 60%),
+                    radial-gradient(680px 360px at 55% 100%, rgba(46,230,182,.18), transparent 60%);
+            pointer-events:none;
+        }
+        .hero > *{ position:relative; z-index:1; }
+
+        .kicker{
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.62);
+            border: 1px solid rgba(116, 55, 150, .16);
+            color: rgba(42,27,61,.78);
+            font-size: 13px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .kicker .star{
+            width:14px;
+            height:14px;
+            display:inline-block;
+            background: conic-gradient(from 180deg, var(--pink), var(--yellow), var(--mint), var(--blue), var(--purple), var(--pink));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            box-shadow: 0 0 0 4px rgba(255,79,216,.10);
+        }
+
+        .titleRow{
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            gap: 18px;
+            margin-top: 12px;
+        }
+
+        .hero h2{
+            margin: 0 0 10px;
+            font-size: clamp(34px, 4.8vw, 60px);
+            line-height: 1.03;
+            letter-spacing: -0.02em;
+        }
+
+        .rainbowText{
+            background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue), var(--mint), var(--yellow), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p{
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: clamp(15px, 1.6vw, 18px);
+            line-height: 1.65;
+            max-width: 56ch;
+        }
+
+        .unicorn{
+            width: clamp(86px, 12vw, 120px);
+            height: auto;
+            flex: 0 0 auto;
+            filter: drop-shadow(0 14px 24px rgba(138, 91, 255, .15));
+        }
+
+        .ctaRow{
+            display:flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items:center;
+            margin-top: 18px;
+        }
+
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(116, 55, 150, .20);
+            background: rgba(255,255,255,.62);
+            color: rgba(42,27,61,.92);
+            font-weight: 750;
+            transition: transform .12s ease, filter .12s ease, background .12s ease;
+            user-select:none;
+            box-shadow: 0 12px 26px rgba(90, 30, 130, .10);
+        }
+        .btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+        .btn:active{ transform: translateY(0px); }
+
+        .btnPrimary{
+            border-color: rgba(255,255,255,.8);
+            background: linear-gradient(135deg, rgba(255,79,216,.95), rgba(138,91,255,.9), rgba(57,198,255,.85), rgba(46,230,182,.85), rgba(255,214,90,.9));
+            color:#2a1b3d;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-rows: auto 1fr;
+            gap: clamp(16px, 3.2vw, 28px);
+        }
+
+        .details, .note{
+            padding: clamp(16px, 3.6vw, 26px);
+        }
+
+        .details h3, .note h3{
+            margin:0 0 10px;
+            font-size: 16px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: rgba(42,27,61,.78);
+        }
+
+        .list{
+            margin: 0;
+            padding: 0;
+            list-style:none;
+            display:grid;
+            gap: 12px;
+        }
+
+        .item{
+            display:flex;
+            align-items:flex-start;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 16px;
+            background: rgba(255,255,255,.55);
+            border: 1px dashed rgba(116, 55, 150, .22);
+        }
+
+        .icon{
+            width: 36px;
+            height: 36px;
+            border-radius: 14px;
+            display:grid;
+            place-items:center;
+            background:
+                    linear-gradient(135deg, rgba(255,79,216,.20), rgba(57,198,255,.18), rgba(46,230,182,.16));
+            border: 1px solid rgba(116, 55, 150, .14);
+            flex: 0 0 auto;
+        }
+
+        .meta strong{
+            display:block;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        .meta span{
+            display:block;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .note{
+            position:relative;
+            overflow:hidden;
+        }
+        .note::before{
+            content:"";
+            position:absolute;
+            inset:-2px;
+            background:
+                    linear-gradient(135deg, rgba(255,79,216,.12), rgba(138,91,255,.10), rgba(57,198,255,.10), rgba(46,230,182,.10), rgba(255,214,90,.12));
+            pointer-events:none;
+        }
+        .note > *{ position:relative; z-index:1; }
+
+        .note p{
+            margin: 8px 0 0;
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        footer{
+            width:min(var(--max), 100%);
+            padding: 18px 4px 0;
+            color: rgba(42,27,61,.55);
+            font-size: 12px;
+            display:flex;
+            justify-content:space-between;
+            gap: 14px;
+            flex-wrap:wrap;
+        }
+
+        @media (max-width: 860px){
+            main{ grid-template-columns: 1fr; }
+            .titleRow{ align-items:center; }
+        }
+
+        @media (prefers-reduced-motion: reduce){
+            .btn{ transition:none; }
+        }
+    </style>
 </head>
+
 <body>
+<div class="sparkles" aria-hidden="true"></div>
 
-<h1>> LEVEL_06 ACTIVATED</h1>
-<p>Mission: Birthday Party</p>
-<p>Date: 23.3.2026</p>
-<p>Location: Milovice</p>
+<div class="wrap" id="top">
+    <header aria-label="Top">
+        <div class="brand">
+            <div class="sticker" aria-hidden="true"></div>
+            <h1>Unicorn Rainbow Party</h1>
+        </div>
 
-<a href="https://maps.google.com">OPEN MAP</a>
+        <div class="pill" aria-label="Date">
+            <span aria-hidden="true">🎂</span>
+            <span>23 Mar 2026</span>
+        </div>
+    </header>
 
+    <main aria-label="Invitation">
+        <section class="card hero">
+            <div class="kicker"><span class="star" aria-hidden="true"></span> You’re invited!</div>
+
+            <div class="titleRow">
+                <div>
+                    <h2><span class="rainbowText">Emily</span> is turning <span class="rainbowText">6</span>!</h2>
+                    <p>
+                        Join us for a magical unicorn party with rainbow fun.
+                        Wear something colorful if you want!
+                    </p>
+                </div>
+
+                <!-- Inline unicorn (no external assets) -->
+                <svg class="unicorn" viewBox="0 0 140 140" role="img" aria-label="Cute unicorn">
+                    <defs>
+                        <linearGradient id="mane" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#ff4fd8"/>
+                            <stop offset="0.25" stop-color="#8a5bff"/>
+                            <stop offset="0.5" stop-color="#39c6ff"/>
+                            <stop offset="0.75" stop-color="#2ee6b6"/>
+                            <stop offset="1" stop-color="#ffd65a"/>
+                        </linearGradient>
+                        <linearGradient id="horn" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#ffd65a"/>
+                            <stop offset="1" stop-color="#ff4fd8"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- face -->
+                    <path d="M35 78c0-28 22-48 49-48s45 18 45 44c0 28-22 52-51 52-26 0-43-22-43-48Z"
+                          fill="rgba(255,255,255,.92)" stroke="rgba(116,55,150,.18)" stroke-width="3" />
+                    <!-- muzzle -->
+                    <path d="M52 92c10 16 40 18 56 2" fill="none" stroke="rgba(116,55,150,.18)" stroke-width="5" stroke-linecap="round"/>
+                    <!-- eye -->
+                    <circle cx="78" cy="72" r="5.2" fill="#2a1b3d"/>
+                    <circle cx="80" cy="70" r="2" fill="rgba(255,255,255,.85)"/>
+
+                    <!-- ear -->
+                    <path d="M62 36c-10 8-14 20-8 30" fill="rgba(255,255,255,.92)" stroke="rgba(116,55,150,.18)" stroke-width="3" stroke-linecap="round"/>
+                    <!-- mane -->
+                    <path d="M42 58c10-22 34-32 58-24-10 8-12 22-4 34-18-4-30 6-34 18-10-6-18-14-20-28Z"
+                          fill="url(#mane)" opacity=".95"/>
+                    <!-- horn -->
+                    <path d="M92 18 104 44 86 42Z" fill="url(#horn)" stroke="rgba(116,55,150,.18)" stroke-width="3" stroke-linejoin="round"/>
+                    <!-- horn stripes -->
+                    <path d="M93 25l8 4M91 32l10 5M89 38l11 6" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
+                    <!-- cheek -->
+                    <circle cx="96" cy="84" r="7" fill="rgba(255,79,216,.18)"/>
+                </svg>
+            </div>
+
+            <div class="ctaRow">
+                <a class="btn btnPrimary" href="https://maps.google.com" target="_blank" rel="noopener noreferrer">
+                    Open map
+                    <span aria-hidden="true">🗺️</span>
+                </a>
+
+                <a class="btn" href="#details">
+                    See details
+                    <span aria-hidden="true">✨</span>
+                </a>
+            </div>
+        </section>
+
+        <div class="grid" id="details">
+            <section class="card details" aria-label="Event details">
+                <h3>Party Details</h3>
+
+                <ul class="list">
+                    <li class="item">
+                        <div class="icon" aria-hidden="true">📅</div>
+                        <div class="meta">
+                            <strong>Date</strong>
+                            <span>23 March 2026</span>
+                        </div>
+                    </li>
+
+                    <li class="item">
+                        <div class="icon" aria-hidden="true">📍</div>
+                        <div class="meta">
+                            <strong>Location</strong>
+                            <span>Milovice</span>
+                        </div>
+                    </li>
+
+                    <li class="item">
+                        <div class="icon" aria-hidden="true">⏰</div>
+                        <div class="meta">
+                            <strong>Time</strong>
+                            <span>From 18:00 (flexible)</span>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <aside class="card note" aria-label="Extra note">
+                <div>
+                    <h3>Little Note</h3>
+                    <p>
+                        Bring your best unicorn energy. If you want to bring something,
+                        bubbles, stickers, or a small snack are perfect.
+                    </p>
+                </div>
+
+                <div class="ctaRow">
+                    <a class="btn" href="mailto:hello@example.com?subject=RSVP%20Emily%27s%206th%20Birthday&body=Hi!%20We%27re%20coming%20to%20Emily%27s%20birthday.%0AName%3A%0ANumber%20of%20kids%3A%0AAllergies%3A%20">
+                        RSVP by email
+                        <span aria-hidden="true">💌</span>
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer aria-label="Footer">
+        <span>Made with rainbows • Single page • No frameworks</span>
+        <a class="pill" href="#top" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">Back to top</a>
+    </footer>
+</div>
 </body>
 </html>
