@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="High-tech Rainbow Unicorn Invitation" />
+    <title>EMI // PROTOCOL 06 // BIRTHDAY</title>
+    <link rel="stylesheet" href="style_tech.css">
+</head>
+<body>
+    <div class="tech-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <header class="header">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>System Online // Protocol 06</span>
+            </div>
+            <div class="status-indicator" style="color: var(--accent-blue)">
+                <span>21-03-2026 // 14:00</span>
+            </div>
+        </header>
+
+        <main class="main-card">
+            <section class="hero-content">
+                <span class="sub-header">> INITIATING CELEBRATION_SEQUENCE</span>
+                <h1><span class="rainbow-glow">EMI</span> SLAVÍ <span class="rainbow-glow">6</span></h1>
+                
+                <div class="event-details">
+                    <div class="detail-item">
+                        <div class="detail-icon">📅</div>
+                        <div class="detail-text">
+                            <strong>Target Date</strong>
+                            <span>21. března 2026</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">📍</div>
+                        <div class="detail-text">
+                            <strong>Coordinates</strong>
+                            <span>Rodinné Centrum Milovice</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">⏰</div>
+                        <div class="detail-text">
+                            <strong>Sync Time</strong>
+                            <span>14:00 Zulu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-tech btn-primary" onclick="downloadICS()">
+                        <span>Add to Calendar</span>
+                        <span aria-hidden="true">📅</span>
+                    </button>
+                    <a href="https://maps.google.com" target="_blank" class="btn-tech">
+                        <span>Navigate</span>
+                        <span aria-hidden="true">🗺️</span>
+                    </a>
+                </div>
+            </section>
+
+            <aside class="qr-section">
+                <div class="qr-box" id="map-qr">
+                    <!-- QR Code will be injected here -->
+                </div>
+                <div class="qr-label">SCAN FOR COORDINATES</div>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <svg width="60" height="60" viewBox="0 0 140 140">
+                        <defs>
+                            <linearGradient id="mane-tech" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#ff4fd8"/>
+                                <stop offset="1" stop-color="#39c6ff"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M35 78c0-28 22-48 49-48s45 18 45 44c0 28-22 52-51 52-26 0-43-22-43-48Z" fill="rgba(255,255,255,0.1)" stroke="var(--accent-purple)" stroke-width="2" />
+                        <path d="M92 18 104 44 86 42Z" fill="var(--accent-yellow)" />
+                        <circle cx="78" cy="72" r="5" fill="var(--accent-mint)" />
+                    </svg>
+                    <div class="qr-label" style="margin-top: 10px;">UNICORN_OS v1.0</div>
+                </div>
+            </aside>
+        </main>
+
+        <div class="tech-stats">
+            <div class="stat-card">
+                <span class="stat-value">6.0</span>
+                <span class="stat-label">Version</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">100%</span>
+                <span class="stat-label">Magic Level</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">∞</span>
+                <span class="stat-label">Fun Probability</span>
+            </div>
+        </div>
+
+        <footer style="margin-top: 60px; text-align: center; color: var(--text-dim); font-family: var(--font-mono); font-size: 10px;">
+            <p>// ENCRYPTED INVITATION SEND TO ALL ALLIES //</p>
+            <p>NO FRAMEWORKS // PURE TECH // RAINBOWS INCLUDED</p>
+        </footer>
+    </div>
+
+    <script src="script_tech.js"></script>
+</body>
+</html>
