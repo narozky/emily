@@ -196,7 +196,7 @@
 
         .titleRow{
             display:flex;
-            align-items:flex-start;
+            align-items:center;
             justify-content:space-between;
             gap: 18px;
             margin-top: 12px;
@@ -221,7 +221,7 @@
             color: var(--muted);
             font-size: clamp(15px, 1.6vw, 18px);
             line-height: 1.65;
-            max-width: 56ch;
+            max-width: 92%;
         }
 
         .unicorn{
@@ -364,6 +364,77 @@
         @media (prefers-reduced-motion: reduce){
             .btn{ transition:none; }
         }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(42, 27, 61, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border: 1px solid var(--stroke);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            border-radius: calc(var(--radius) - 4px);
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--stroke);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+            transition: background 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #fff;
+        }
     </style>
 </head>
 
@@ -384,17 +455,7 @@
 <!--            <div class="kicker"><span class="star" aria-hidden="true"></span> You’re invited!</div>-->
 
             <div class="titleRow">
-                <div>
-                    <h2><span class="rainbowText">Emi</span> slaví <span class="rainbowText">6</span>!</h2>
-                    <p>
-                        Zveme vás na oslavu narozenin, která se koná 21. března od 14:00 v Rodinném centru Milovice.
-                        <br>Přijďte s námi společně oslavit tento výjimečný den!
-                        <br><br>
-                        Prosíme, bez velkých dárků a bez občerstvení. O jídlo i pití (pivo, víno, alko i nealko) bude bohatě postaráno.
-                        <br><br>Největší radostí pro nás bude, když přijdete a užijeme si společný čas 💛
-                    </p>
-                </div>
-
+                <h2><span class="rainbowText">Emi</span> slaví <span class="rainbowText">6</span>!</h2>
                 <!-- Inline unicorn (no external assets) -->
                 <svg class="unicorn" viewBox="0 0 140 140" role="img" aria-label="Cute unicorn">
                     <defs>
@@ -433,6 +494,12 @@
                     <circle cx="96" cy="84" r="7" fill="rgba(255,79,216,.18)"/>
                 </svg>
             </div>
+            <p>
+                <br><br>
+                Zveme vás na oslavu Emilčiných narozenin, která se koná 21. března od 14:00 v našem oblíbeném Rodinném centru Milovice. <br>
+                <br>Přijďte s námi společně oslavit tento výjimečný den!
+                <br><br>Největší radostí pro nás bude, když přijdete a užijeme si společný čas 💛
+            </p>
 
 <!--            <div class="ctaRow">-->
 <!--                <a class="btn btnPrimary" href="https://maps.app.goo.gl/iJvLy9VscvZLgDW4A" target="_blank" rel="noopener noreferrer">-->
@@ -480,28 +547,70 @@
             <aside class="card note" aria-label="Extra note">
                 <div>
                     <h3>Důležité</h3>
-                    <br><br>
+
+                    <p>Prosíme, bez velkých dárků a <b>bez občerstvení</b>.
+                       O jídlo i pití (pivo, víno, alko i nealko) bude bohatě postaráno, včetně dortu a zákusků.</p>
+                    <br>
+                    <center>
                     <div class="ctaRow">
-                        <a class="btn btnPrimary" href="https://maps.app.goo.gl/iJvLy9VscvZLgDW4A" target="_blank" rel="noopener noreferrer">
-                            Podívej se na mapu                    <span aria-hidden="true">🗺️</span>
-                        </a>
+                        <button class="btn btnPrimary" onclick="openInvitation()">
+                            Pozvánka                    <span aria-hidden="true">💌</span>
+                        </button>
 
-                        <a class="btn" href="#details">
-                            See details
-                            <span aria-hidden="true">✨</span>
-                        </a>
-                    </div>
+                        <button class="btn" onclick="openMap()">
+                            Parkování a vchod
+                            <span aria-hidden="true">🅿️</span>
+                        </button>
+                    </div></center>
 
-                </div>
-<!--                <div class="ctaRow">-->
-<!--                    <a class="btn" href="mailto:hello@example.com?subject=RSVP%20Emily%27s%206th%20Birthday&body=Hi!%20We%27re%20coming%20to%20Emily%27s%20birthday.%0AName%3A%0ANumber%20of%20kids%3A%0AAllergies%3A%20">-->
-<!--                        RSVP by email-->
-<!--                        <span aria-hidden="true">💌</span>-->
-                    </a>
                 </div>
             </aside>
         </div>
     </main>
+
+    <div class="modal-overlay" id="mapModal" onclick="closeMap()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeMap()" aria-label="Close modal">&times;</button>
+            <img src="map.png" alt="Mapa místa konání">
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="invitationModal" onclick="closeInvitation()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeInvitation()" aria-label="Close modal">&times;</button>
+            <img src="pozvanka.png" alt="Pozvánka na oslavu">
+        </div>
+    </div>
+
+    <script>
+        function openMap() {
+            document.getElementById('mapModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMap() {
+            document.getElementById('mapModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openInvitation() {
+            document.getElementById('invitationModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInvitation() {
+            document.getElementById('invitationModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMap();
+                closeInvitation();
+            }
+        });
+    </script>
 
     <footer aria-label="Footer">
 <!--        <span>Made with rainbows • Single page • No frameworks</span>-->
